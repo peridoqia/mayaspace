@@ -1,0 +1,27 @@
+body {
+    font-family: 'Arial', 'sans-serif';
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: cursive;
+}
+h1 {
+    font-size: 5vw;
+}
+
+h2 {
+    font-size: 3.3vw;
+}
+
+h3 {
+    font-size: 2.8vw;
+}
+
+p {
+    font-size: 2vw;
+}
+
+.logo {
+    border-radius: 55%;
+    float: left;
+    width: 15vw;
+}

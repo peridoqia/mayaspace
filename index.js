@@ -1,7 +1,8 @@
+
 let gun = Gun();
 let coredb = gun.get(`mayaspace`)
 let postsDB = coredb.get('posts')
-let username;
+let usrname;
 function showMainPage() {
     body.innerHTML = `<img class="logo" src="maya.jpg">
 <h1>MayaSpace</h1><hr><br>
@@ -10,31 +11,36 @@ function showMainPage() {
 <button onclick="post()">Post</button>
 </div>
 <div class="container" id="postContainer">
+<hr>
+Copyright Samuel Lord. All rights reserved.
 </div>
 `;
     let postContainer = document.getElementById("postContainer");
-    postsDB.on((data) => { postContainer.innerHTML = `${xss(data[0])}<hr> ${postContainer.innerHTML}` });
+    postsDB.on((data) => { postContainer.innerHTML = `${data}<hr> ${postContainer.innerHTML}` });
 }
 function login() { 
     let password = document.getElementById("password").value;
-    let encryptedPassword = window.crypto.subtle.digest('SHA-256', password);
-    username = `${document.getElementById("uname").value}@${window.location.hostname}`;
-    let passwd = coredb.get('users').get(username).get(passwordEncrypted)
+    let encryptedPassword = hex_sha256(password)
+    usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
+    let passwd = coredb.get('users').get(usrname).get("encryptedPassword").value
+    console.log(String(passwd) + " /// " + encryptedPassword)
     if (passwd == "" || passwd == null || passwd == undefined) {
-        passwd.put(encryptedPassword);
+        coredb.get('users').get(usrname).get("encryptedPassword").put(encryptedPassword);
         showMainPage();
+    	console.log("passwd")
     } else if (passwd == encryptedPassword) {
         showMainPage();
     } else {
         alert("Incorrect Password");
     }
 }
+
 function post() {
-let postid = `${Math.random().toString(36).substring(2)}-${Math.random().toString(36).substring(2)}-${Math.random().toString(36).substring(2)}-${Math.random().toString(36).substring(2)}-${Math.random().toString(36).substring(2)}-${Math.random().toString(36).substring(2)}`
-let post = document.getElementById("post").value;
-postsDB.put([`[${username}]> <br> ${xss(post)}`, postid]);
+postsDB.put(`[${usrname}] <br> ${filterXSS(document.getElementById("post").value)}`);
+console.log("USER: " + usrname)
 }
 
 function logout() {
     document.location.href = "index.html";
 }
+console.log("loaded")

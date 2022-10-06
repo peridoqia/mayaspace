@@ -1,5 +1,5 @@
 
-let gun = Gun();
+let gun = Gun(['http://localhost:8765/gun', 'https://gun-manhattan.herokuapp.com/gun']);
 let coredb = gun.get(`mayaspace`)
 let postsDB = coredb.get('posts')
 let usrname;

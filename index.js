@@ -16,7 +16,7 @@ Copyright Samuel Lord. All rights reserved.
 </div>
 `;
     let postContainer = document.getElementById("postContainer");
-    postsDB.on((data) => { postContainer.innerHTML = `${data}<hr> ${postContainer.innerHTML}` });
+    postsDB.on((data) => { postContainer.textContent = `${filterXSS(data)}<hr>${postContainer.textContent}`; });
 }
 function login() { 
     let password = document.getElementById("password").value;
@@ -35,12 +35,23 @@ function login() {
     }
 }
 
+function addPost(data) {
+  let postElement = document.createElement('div');
+  postElement.textContent = filterXSS(data);
+  postContainer.appendChild(postElement);
+  postContainer.appendChild(document.createElement('hr'));
+}
+
 function post() {
-postsDB.put(`[${usrname}] <br> ${filterXSS(document.getElementById("post").value)}`);
-console.log("USER: " + usrname)
+  let postData = `[${usrname}] <br> ${filterXSS(document.getElementById("post").value)}`;
+  addPost(postData);
+  postsDB.put(postData);
+  console.log("USER: " + usrname);
 }
 
 function logout() {
     document.location.href = "index.html";
 }
 console.log("loaded")
+postsDB.on((data) => { addPost(data) });
+

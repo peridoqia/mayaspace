@@ -1,4 +1,3 @@
-
 let gun = Gun(['http://localhost:8765/gun', 'https://gun-manhattan.herokuapp.com/gun']);
 let coredb = gun.get(`mayaspace`)
 let postsDB = coredb.get('posts')
@@ -43,31 +42,14 @@ function addPost(data) {
 }
 
 function post() {
-  let userInput = document.getElementById("post").value;
-  let userIdentifier = `${document.getElementById("uname").value}@${window.location.hostname}`;
-
-  // Limit the post to 1000 characters
-  if (userInput.length > 1000) {
-    alert("Post exceeds the character limit of 1000. Please shorten your message.");
-    return;
-  }
-
-  let message = filterXSS(userInput);
-  let formattedMessage = `[${userIdentifier}]: ${message}`;
-
-  // Display the post on the frontend
-  addPost(formattedMessage);
-
-  // Store the post in the database
-  postsDB.put(formattedMessage);
-
-  console.log("USER: " + userIdentifier);
+  let postData = `[${usrname}] <br> ${filterXSS(document.getElementById("post").value)}`;
+  addPost(postData);
+  postsDB.put(postData);
+  console.log("USER: " + usrname);
 }
-
 
 function logout() {
     document.location.href = "index.html";
 }
 console.log("loaded")
 postsDB.on((data) => { addPost(data) });
-

@@ -1,7 +1,7 @@
 
 let gun = Gun(['http://localhost:8765/gun', 'https://gun-manhattan.herokuapp.com/gun']);
-let coredb = gun.get(`mayaspace`)
-let postsDB = coredb.get('posts')
+const coredb = gun.get(`mayaspace`)
+const postsDB = coredb.get('posts')
 let usrname;
 function showMainPage() {
     body.innerHTML = `<img class="logo" src="maya.jpg">

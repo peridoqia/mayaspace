@@ -16,37 +16,42 @@ Copyright Samuel Lord. All rights reserved.
 </div>
 `;
     let postContainer = document.getElementById("postContainer");
-    postsDB.on((data) => { postContainer.textContent = `${filterXSS(data)}<hr>${postContainer.textContent}`; });
+    postsDB.on().map().once((data, key) => {
+        addPost(data);
+    });
 }
 function login() { 
     let password = document.getElementById("password").value;
-    let encryptedPassword = hex_sha256(password)
+    let encryptedPassword = hex_sha256(password);
     usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
-    let passwd = coredb.get('users').get(usrname).get("encryptedPassword").value
-    console.log(String(passwd) + " /// " + encryptedPassword)
-    if (passwd == "" || passwd == null || passwd == undefined) {
-        coredb.get('users').get(usrname).get("encryptedPassword").put(encryptedPassword);
-        showMainPage();
-    	console.log("passwd")
-    } else if (passwd == encryptedPassword) {
-        showMainPage();
-    } else {
-        alert("Incorrect Password");
-    }
+    let userRef = coredb.get('users').get(usrname);
+
+    userRef.once((data) => {
+        let storedPassword = data.encryptedPassword;
+        if (!storedPassword) {
+            userRef.put({ encryptedPassword });
+            showMainPage();
+            console.log("passwd");
+        } else if (storedPassword === encryptedPassword) {
+            showMainPage();
+        } else {
+            alert("Incorrect Password");
+        }
+    });
 }
 
 function addPost(data) {
   let postElement = document.createElement('div');
   postElement.textContent = filterXSS(data);
   postContainer.appendChild(postElement);
-  postContainer.appendChild(document.createElement('hr'));
+  postContainer.appendChild(document.createElement('br'));
 }
 
 function post() {
-  let postData = `[${usrname}] <br> ${filterXSS(document.getElementById("post").value)}`;
-  addPost(postData);
-  postsDB.put(postData);
-  console.log("USER: " + usrname);
+    let postData = `[${usrname}]: ${filterXSS(document.getElementById("post").value)}`;
+    addPost(postData);
+    postsDB.put(postData);
+    console.log("USER: " + usrname);
 }
 
 function logout() {

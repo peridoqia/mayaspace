@@ -3,6 +3,8 @@ let gun = Gun(['http://localhost:8765/gun', 'https://gun-manhattan.herokuapp.com
 let coredb = gun.get(`mayaspace`)
 let postsDB = coredb.get('posts')
 let usrname;
+let postContainer;
+
 function showMainPage() {
     body.innerHTML = `<img class="logo" src="maya.jpg">
     <h1>MayaSpace</h1><hr><br>
@@ -16,20 +18,7 @@ function showMainPage() {
     </div>
     `;
 
-    let postContainer = document.getElementById("postContainer");
-    function addPost(data) {
-          let postElement = document.createElement('div');
-          postElement.textContent = filterXSS(data);
-          postContainer.appendChild(postElement);
-          postContainer.appendChild(document.createElement('br'));
-    }
-
-    function post() {
-        let postData = `[${usrname}]: ${filterXSS(document.getElementById("post").value)}`;
-        addPost(postData);
-        postsDB.put(postData);
-        console.log("USER: " + usrname);
-    }
+    postContainer = document.getElementById("postContainer");
 
     // Use on() instead of once() to continuously listen for changes
     postsDB.on((data, key) => {
@@ -79,6 +68,20 @@ function login() {
             // Handle the error appropriately
         });
 }
+
+    function addPost(data) {
+          let postElement = document.createElement('div');
+          postElement.textContent = filterXSS(data);
+          postContainer.appendChild(postElement);
+          postContainer.appendChild(document.createElement('br'));
+    }
+
+    function post() {
+        let postData = `[${usrname}]: ${filterXSS(document.getElementById("post").value)}`;
+        addPost(postData);
+        postsDB.put(postData);
+        console.log("USER: " + usrname);
+    }
 
 function logout() {
     document.location.href = "index.html";

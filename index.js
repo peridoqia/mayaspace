@@ -35,6 +35,7 @@ async function sha256HexPromise(data) {
 }
 
 
+
 async function sha256HexPromise(data) {
   const msgUint8 = new TextEncoder().encode(data); // encode as (utf-8) Uint8Array
   const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
@@ -45,26 +46,36 @@ async function sha256HexPromise(data) {
   return hashHex;
 }
 
-function login() { 
+function login() {
     let password = document.getElementById("password").value;
-    usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
-    let userRef = coredb.get('users').get(usrname);
+
+    // Perform the SHA-256 hashing asynchronously
     sha256HexPromise(password)
         .then(function (encryptedPassword) {
+            usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
+            return encryptedPassword;
         })
         .then(function (encryptedPassword) {
-            userRef.once((data) => {
-                let storedPassword = data.encryptedPassword;
-                if (!storedPassword) {
-                    userRef.put({ encryptedPassword });
+            // Access the user reference and check the stored password
+            let userRef = coredb.get('users').get(usrname);
+            let storedPassword = coredb.get('users').get(usrname).get("passwd");
+
+            storedPassword.once((storedData) => {
+                if (storedData === undefined || storedData === null || storedData === "") {
+                    storedPassword.put(`${encryptedPassword}`);
                     showMainPage();
-                    console.log("passwd");
-                } else if (storedPassword === encryptedPassword) {
+                    console.log("registering and logging in....");
+                } else if (storedData === encryptedPassword) {
                     showMainPage();
+                    console.log("welcome back!");
                 } else {
                     alert("Incorrect Password");
                 }
             });
+        })
+        .catch(function (error) {
+            console.error('Error in sha256HexPromise:', error);
+            // Handle the error appropriately
         });
 }
 

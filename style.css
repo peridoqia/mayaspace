@@ -5,32 +5,32 @@ h1,h2,h3,h4,h5,h6 {
     font-family: cursive;
 }
 h1 {
-    font-size: 5vw;
+    font-size: 2rem;
 }
 
 h2 {
-    font-size: 3.3vw;
+    font-size: 1.7rem;
 }
 
 h3 {
-    font-size: 2.8vw;
+    font-size: 1.5rem;
 }
 
-p {
-    font-size: 2vw;
+p,input {
+    font-size: 1.1rem;
 }
 
 input {
     width: 25%;
-    font-size: 2vw;
 }
 
 button {
-    font-size: 2.35vw;
+    font-size: 1.2rem;
 }
 
 .logo {
     border-radius: 55%;
     float: left;
     width: 15vw;
+    max-width:200px;
 }

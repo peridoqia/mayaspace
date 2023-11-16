@@ -27,12 +27,12 @@ function showMainPage() {
 
 function login() { 
     let password = document.getElementById("password").value;
-    let encryptedPassword = hex_sha256(password);
+    var encryptedPassword = hex_sha256(password);
     usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
     let userRef = coredb.get('users').get(usrname);
     
     userRef.once((data) => {
-        let storedPassword = data.encryptedPassword;
+        let storedPassword = encryptedPassword;
         if (storedPassword === undefined || storedPassword === null) {
             userRef.put({ encryptedPassword });
             showMainPage();

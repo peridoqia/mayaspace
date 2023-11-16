@@ -32,7 +32,7 @@ function login() {
     let userRef = coredb.get('users').get(usrname);
     
     userRef.once((data) => {
-        let storedPassword = coredb.get('users').get(username).get(passwordEncrypted);
+        let storedPassword = coredb.get('users').get(usrname).get(encryptedPassword);
         if (storedPassword === undefined || storedPassword === null) {
             userRef.put(`${encryptedPassword}`);
             showMainPage();

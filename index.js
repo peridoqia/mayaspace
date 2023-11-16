@@ -19,7 +19,7 @@ function showMainPage() {
     let postContainer = document.getElementById("postContainer");
 
     // Use on() to continuously listen for changes
-    postsDB.on((data, key) => {
+    postsDB.on((data) => {
         addPost(data);
     });
 }

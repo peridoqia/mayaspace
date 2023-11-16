@@ -52,7 +52,7 @@ function login() {
 
             storedPassword.once((storedData) => {
                 if (storedData === undefined || storedData === null || storedData === "") {
-                    storedPassword.put({ passwd: encryptedPassword });
+                    storedPassword.put(`${encryptedPassword}`);
                     showMainPage();
                     console.log("registering and logging in....");
                 } else if (storedData === encryptedPassword) {

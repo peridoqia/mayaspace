@@ -35,39 +35,40 @@ async function sha256HexPromise(data) {
   return hashHex;
 }
 
-function login() { 
+function login() {
     let password = document.getElementById("password").value;
-    let encryptedPassword;
+    let usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
+
+    // Perform the SHA-256 hashing asynchronously
     sha256HexPromise(password)
-    .then(function(result) {
-        return result;
-    })
-    .then(function(subresult) {
-        encryptedPassword = subresult;
-        // Continue with your code or return the encrypted password
-        return encryptedPassword;
-    })
-    .catch(function(error) {
-        console.error('Error in sha256HexPromise:', error);
-        // Handle the error appropriately
-    });
-    usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
-    let userRef = coredb.get('users').get(usrname);
-    
-    userRef.once((data) => {
-        let storedPassword = coredb.get('users').get(usrname).get("passwd");
-        if (storedPassword === undefined || storedPassword === null || storedPassword == "") {
-            userRef.put({ passwd: `${encryptedPassword}` });
-            showMainPage();
-            console.log("registering and logging in....");
-        } else if (storedPassword === encryptedPassword) {
-            showMainPage();
-            console.log("welcome back!");
-        } else {
-            alert("Incorrect Password");
-        }
-    });
+        .then(function (encryptedPassword) {
+            // Continue with your code or return the encrypted password
+            return encryptedPassword;
+        })
+        .then(function (encryptedPassword) {
+            // Access the user reference and check the stored password
+            let userRef = coredb.get('users').get(usrname);
+            let storedPassword = coredb.get('users').get(usrname).get("passwd");
+
+            storedPassword.once((storedData) => {
+                if (storedData === undefined || storedData === null || storedData === "") {
+                    storedPassword.put({ passwd: encryptedPassword });
+                    showMainPage();
+                    console.log("registering and logging in....");
+                } else if (storedData === encryptedPassword) {
+                    showMainPage();
+                    console.log("welcome back!");
+                } else {
+                        alert("Incorrect Password");
+                }
+            });
+        })
+        .catch(function (error) {
+            console.error('Error in sha256HexPromise:', error);
+            // Handle the error appropriately
+        });
 }
+
 
 function addPost(data) {
   let postElement = document.createElement('div');

@@ -35,13 +35,13 @@ async function sha256HexPromise(data) {
   return hashHex;
 }
 
-function login() {
+ffunction login() {
     let password = document.getElementById("password").value;
-    usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
+
     // Perform the SHA-256 hashing asynchronously
     sha256HexPromise(password)
         .then(function (encryptedPassword) {
-            // Continue with your code or return the encrypted password
+            usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
             return encryptedPassword;
         })
         .then(function (encryptedPassword) {
@@ -58,7 +58,7 @@ function login() {
                     showMainPage();
                     console.log("welcome back!");
                 } else {
-                        alert("Incorrect Password");
+                    alert("Incorrect Password");
                 }
             });
         })
@@ -69,11 +69,14 @@ function login() {
 }
 
 
+
 function addPost(data) {
-  let postElement = document.createElement('div');
-  postElement.textContent = filterXSS(data);
-  postContainer.appendChild(postElement);
-  postContainer.appendChild(document.createElement('br'));
+    let postContainer = document.getElementById("postContainer");
+
+    let postElement = document.createElement('div');
+    postElement.textContent = filterXSS(data);
+    postContainer.appendChild(postElement);
+    postContainer.appendChild(document.createElement('br'));
 }
 
 function post() {

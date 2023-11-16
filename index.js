@@ -27,18 +27,19 @@ function showMainPage() {
 
 function login() { 
     let password = document.getElementById("password").value;
-    var encryptedPassword = hex_sha256(password);
+    let encryptedPassword = hex_sha256(password);
     usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
     let userRef = coredb.get('users').get(usrname);
     
     userRef.once((data) => {
-        let storedPassword = encryptedPassword;
+        let storedPassword = coredb.get('users').get(username).get(passwordEncrypted);
         if (storedPassword === undefined || storedPassword === null) {
-            userRef.put({ encryptedPassword });
+            userRef.put(`${encryptedPassword}`);
             showMainPage();
-            console.log("passwd");
+            console.log("registering and logging in....");
         } else if (storedPassword === encryptedPassword) {
             showMainPage();
+            console.log("welcome back!");
         } else {
             alert("Incorrect Password");
         }

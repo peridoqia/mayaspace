@@ -35,7 +35,7 @@ async function sha256HexPromise(data) {
   return hashHex;
 }
 
-ffunction login() {
+function login() {
     let password = document.getElementById("password").value;
 
     // Perform the SHA-256 hashing asynchronously

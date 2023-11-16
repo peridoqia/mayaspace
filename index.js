@@ -52,7 +52,7 @@ function login() {
         // Handle the error appropriately
     });
     usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
-    let userRef = await coredb.get('users').get(usrname);
+    let userRef = coredb.get('users').get(usrname);
     
     userRef.once((data) => {
         let storedPassword = coredb.get('users').get(usrname).get(encryptedPassword);

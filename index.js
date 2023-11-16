@@ -38,7 +38,7 @@ async function sha256HexPromise(data) {
 function login() { 
     let password = document.getElementById("password").value;
     let encryptedPassword;
-    sha256HexPromise("hello")
+    sha256HexPromise(password)
     .then(function(result) {
         return result;
     })

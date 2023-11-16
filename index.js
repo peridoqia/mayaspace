@@ -68,13 +68,11 @@ function login() {
         });
 }
 
-
-
 function addPost(data) {
-    let postElement = document.createElement('div');
-    postElement.textContent = filterXSS(data);
-    postContainer.appendChild(postElement);
-    postContainer.appendChild(document.createElement('br'));
+  let postElement = document.createElement('div');
+  postElement.textContent = filterXSS(data);
+  postContainer.appendChild(postElement);
+  postContainer.appendChild(document.createElement('br'));
 }
 
 function post() {

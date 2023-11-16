@@ -3,32 +3,37 @@ let gun = Gun(['http://localhost:8765/gun', 'https://gun-manhattan.herokuapp.com
 let coredb = gun.get(`mayaspace`)
 let postsDB = coredb.get('posts')
 let usrname;
+
 function showMainPage() {
     body.innerHTML = `<img class="logo" src="maya.jpg">
-<h1>MayaSpace</h1><hr><br>
-<div class="container" id="poster">
-<input type="text" placeholder="Type a post here..." name="post" id="post" required>
-<button onclick="post()">Post</button>
-</div>
-<div class="container" id="postContainer">
-<hr>
-Copyright Samuel Lord. All rights reserved.
-</div>
-`;
+    <h1>MayaSpace</h1><hr><br>
+    <div class="container" id="poster">
+    <input type="text" placeholder="Type a post here..." name="post" id="post" required>
+    <button onclick="post()">Post</button>
+    </div>
+    <div class="container" id="postContainer">
+    <hr>
+    Copyright Samuel Lord. All rights reserved.
+    </div>
+    `;
+
     let postContainer = document.getElementById("postContainer");
-    postsDB.on().map().once((data, key) => {
+
+    // Use on() instead of once() to continuously listen for changes
+    postsDB.on((data, key) => {
         addPost(data);
     });
 }
+
 function login() { 
     let password = document.getElementById("password").value;
     let encryptedPassword = hex_sha256(password);
     usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
     let userRef = coredb.get('users').get(usrname);
-
+    
     userRef.once((data) => {
         let storedPassword = data.encryptedPassword;
-        if (!storedPassword) {
+        if (storedPassword === undefined || storedPassword === null) {
             userRef.put({ encryptedPassword });
             showMainPage();
             console.log("passwd");

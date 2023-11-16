@@ -79,18 +79,31 @@ function login() {
         });
 }
 
+function trimStringToChars(inputString, maxLength) {
+  if (inputString.length > maxLength + 1) {
+    return inputString.substring(0, maxLength) + '...';
+  } else {
+    return inputString;
+  }
+}
+
 function addPost(data) {
     let postContainer = document.getElementById("postContainer");
 
     let postElement = document.createElement('div');
-    postElement.textContent = filterXSS(data);
+    postElement.textContent = filterXSS(trimStringToChars(data, 1000));
     postContainer.appendChild(postElement);
     postContainer.appendChild(document.createElement('br'));
 }
 
 function post() {
-    let postData = `[${usrname}]: ${filterXSS(document.getElementById("post").value)}`;
-    postsDB.put(postData);
+    let post = `${filterXSS(document.getElementById("post").value)}`;
+    let postData = `[${usrname}]: ${post}`;
+    if .length < 1001 {
+        postsDB.put(postData);
+    } else {
+        alert("max post length is 1000 chars!")
+    }
     console.log("USER: " + usrname);
 }
 

@@ -99,7 +99,7 @@ function addPost(data) {
 function post() {
     let post = `${filterXSS(document.getElementById("post").value)}`;
     let postData = `[${usrname}]: ${post}`;
-    if .length < 1001 {
+    if post.length < 1001 {
         postsDB.put(postData);
     } else {
         alert("max post length is 1000 chars!")

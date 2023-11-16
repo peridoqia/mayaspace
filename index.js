@@ -55,7 +55,7 @@ function login() {
     let userRef = coredb.get('users').get(usrname);
     
     userRef.once((data) => {
-        let storedPassword = coredb.get('users').get(usrname).get(passwd);
+        let storedPassword = coredb.get('users').get(usrname).get(passwd) || null;
         if (storedPassword === undefined || storedPassword === null || storedPassword == "") {
             userRef.put({ passwd: `${encryptedPassword}` });
             showMainPage();

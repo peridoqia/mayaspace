@@ -20,6 +20,15 @@ p {
     font-size: 2vw;
 }
 
+input {
+    width: 25%;
+    font-size: 2vw;
+}
+
+button {
+    font-size: 2.35vw;
+}
+
 .logo {
     border-radius: 55%;
     float: left;

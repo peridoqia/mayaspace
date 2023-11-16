@@ -25,14 +25,24 @@ function showMainPage() {
     });
 }
 
-function login() { 
-    let password = document.getElementById("password").value;
-    let encryptedPassword = hex_sha256(password);
+async function sha256HexPromise(data) {
+  const msgUint8 = new TextEncoder().encode(data); // encode as (utf-8) Uint8Array
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+  const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join(""); // convert bytes to hex string
+  return hashHex;
+}
+
+async function login() { 
+    let password = await document.getElementById("password").value;
+    let encryptedPassword = await sha256HexPromise(password);
     usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
-    let userRef = coredb.get('users').get(usrname);
+    let userRef = await coredb.get('users').get(usrname);
     
     userRef.once((data) => {
-        let storedPassword = coredb.get('users').get(usrname).get(encryptedPassword);
+        let storedPassword = await coredb.get('users').get(usrname).get(encryptedPassword);
         if (storedPassword === undefined || storedPassword === null || storedPassword == "") {
             userRef.put(`${encryptedPassword}`);
             showMainPage();

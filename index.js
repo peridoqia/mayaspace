@@ -1,6 +1,4 @@
 let gun = Gun(['http://nodemixaholic.com:8069/gun', 'https://gun-manhattan.herokuapp.com/gun']);
-const coredb = gun.get(`mayaspace`);
-const postsDB = coredb.get('posts');
 let usrname;
 
 function showMainPage() {
@@ -17,7 +15,8 @@ function showMainPage() {
     `;
 
     let postContainer = document.getElementById("postContainer");
-
+    const coredb = gun.get(`mayaspace`);
+    const postsDB = coredb.get('posts');
     // Use on() to continuously listen for changes
     postsDB.on((data) => {
         addPost(data);
@@ -48,7 +47,7 @@ async function sha256HexPromise(data) {
 
 function login() {
     let password = document.getElementById("password").value;
-
+    const coredb = gun.get(`mayaspace`);
     // Perform the SHA-256 hashing asynchronously
     sha256HexPromise(password)
         .then(function (encryptedPassword) {
@@ -99,6 +98,8 @@ function addPost(data) {
 function post() {
     let post = `${filterXSS(document.getElementById("post").value)}`;
     let postData = `[${usrname}]: ${post}`;
+    const coredb = gun.get(`mayaspace`);
+    const postsDB = coredb.get('posts');
     if (post.length < 1001) {
         postsDB.put(postData);
     } else {

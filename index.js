@@ -90,7 +90,6 @@ function addPost(data) {
 
 function post() {
     let postData = `[${usrname}]: ${filterXSS(document.getElementById("post").value)}`;
-    addPost(postData);
     postsDB.put(postData);
     console.log("USER: " + usrname);
 }

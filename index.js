@@ -35,14 +35,27 @@ async function sha256HexPromise(data) {
   return hashHex;
 }
 
-async function login() { 
-    let password = await document.getElementById("password").value;
-    let encryptedPassword = await sha256HexPromise(password);
+function login() { 
+    let password = document.getElementById("password").value;
+    let encryptedPassword;
+    sha256HexPromise("hello")
+    .then(function(result) {
+        return result;
+    })
+    .then(function(subresult) {
+        encryptedPassword = subresult;
+        // Continue with your code or return the encrypted password
+        return encryptedPassword;
+    })
+    .catch(function(error) {
+        console.error('Error in sha256HexPromise:', error);
+        // Handle the error appropriately
+    });
     usrname = `${document.getElementById("uname").value}@${window.location.hostname}`;
     let userRef = await coredb.get('users').get(usrname);
     
     userRef.once((data) => {
-        let storedPassword = await coredb.get('users').get(usrname).get(encryptedPassword);
+        let storedPassword = coredb.get('users').get(usrname).get(encryptedPassword);
         if (storedPassword === undefined || storedPassword === null || storedPassword == "") {
             userRef.put(`${encryptedPassword}`);
             showMainPage();

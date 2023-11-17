@@ -5,33 +5,40 @@ h1,h2,h3,h4,h5,h6 {
     font-family: cursive;
 }
 h1 {
-    font-size: 5vw;
+    font-size: 2rem;
 }
 
 h2 {
-    font-size: 3.3vw;
+    font-size: 1.7rem;
 }
 
 h3 {
-    font-size: 2.8vw;
+    font-size: 1.5rem;
 }
 
 p {
-    font-size: 2vw;
+    font-size: 1.1rem;
 }
 
 input {
     width: 25%;
-    font-size: 2vw;
-}
-
-button {
-    font-size: 2.35vw;
 }
 
 .logo {
     border-radius: 55%;
     float: left;
     width: 15vw;
-    max-width: 200px;
+    min-width: 80px;
+    max-width:200px;
+}
+
+@media screen and (min-width: 500px) {
+    h1 { font-size: 5rem; }
+    h2 { font-size: 4rem; }
+    h3 { font-size: 3rem; }
+    p { font-size: 3rem !important; }
+    input,button {
+        font-size: 2rem;
+        width: 25%;
+    }
 }
